@@ -40,3 +40,11 @@ IN: 99problems.tests
 { { 1 2 3 4 5 } } [ { 1 1 2 2 2 3 4 5 5 } compress ] unit-test
 { { 1 } } [ { 1 1 1 1 1 } compress ] unit-test
 { { } } [ { } compress ] unit-test
+
+{ { { 1 } { 2 } { 3 } { 4 } { 5 } } }
+    [ { 1 2 3 4 5 } pack ] unit-test
+{ { { 1 1 } { 2 2 } { 3 3 } { 2 2 } { 5 5 } } }
+    [ { 1 1 2 2 3 3 2 2 5 5 } pack ] unit-test
+{ { } } [ { } pack ] unit-test
+{ { { 1 1 1 1 } { 2 } { 3 3 } { 1 1 } { 4 } { 5 5 5 5 } } }
+    [ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } pack ] unit-test

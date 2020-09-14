@@ -55,3 +55,34 @@ USING: arrays ;
     if
   ]
   reduce second ;
+
+! P09 (**) Pack consecutive duplicates of list elements
+! into sublists.
+TUPLE: pack-state current run (result) ;
+: <pack-state> ( -- state )
+  f { } { } pack-state boa ;
+
+USING: locals accessors ;
+:: flush ( state elt -- state )
+  <pack-state>
+    elt >>current
+    { elt } >>run
+    state [ (result)>> ] [ run>> ] bi suffix >>(result) ;
+
+:: pack-one ( state elt -- state )
+  elt state current>> =
+  [ state [ elt suffix ] change-run ]
+  [ state elt flush ]
+  if ;
+
+! We'll define our own result>> accessor, since the
+! internal (result) has an "off-by-one" in that the initial
+! `{ }` run is pushed on the first flush.
+!
+! This custom accessor will appropriately discard it.
+: result>> ( state -- seq ) (result)>> 1 tail ;
+
+: pack ( seq -- seqs )
+  <pack-state> [ pack-one ] reduce
+  f flush   ! flush the current run to the result
+  result>> ;
