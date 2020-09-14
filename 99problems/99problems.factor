@@ -80,7 +80,7 @@ USING: locals accessors ;
 ! `{ }` run is pushed on the first flush.
 !
 ! This custom accessor will appropriately discard it.
-: result>> ( state -- seq ) (result)>> 1 tail ;
+M: pack-state result>> ( state -- seq ) (result)>> 1 tail ;
 
 : pack ( seq -- seqs )
   <pack-state> [ pack-one ] reduce
