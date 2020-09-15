@@ -63,16 +63,19 @@ TUPLE: pack-state current run (result) ;
   f { } { } pack-state boa ;
 
 USING: locals accessors ;
-:: flush ( state elt -- state )
+GENERIC: flush ( elt state -- state )
+GENERIC: pack-one ( elt state -- state )
+
+M:: pack-state flush ( elt state -- state )
   <pack-state>
     elt >>current
     { elt } >>run
     state [ (result)>> ] [ run>> ] bi suffix >>(result) ;
 
-:: pack-one ( state elt -- state )
+M:: pack-state pack-one ( elt state -- state )
   elt state current>> =
   [ state [ elt suffix ] change-run ]
-  [ state elt flush ]
+  [ elt state flush ]
   if ;
 
 ! We'll define our own result>> accessor, since the
@@ -83,8 +86,8 @@ USING: locals accessors ;
 M: pack-state result>> ( state -- seq ) (result)>> 1 tail ;
 
 : pack ( seq -- seqs )
-  <pack-state> [ pack-one ] reduce
-  f flush   ! flush the current run to the result
+  <pack-state> [ swap pack-one ] reduce
+  f swap flush   ! flush the current run to the result
   result>> ;
 
 ! P10 (*) Run-length encoding of a list.
@@ -115,9 +118,8 @@ TUPLE: encode-state current run (result) ;
 : <encode-state> ( -- state )
   f 0 { } encode-state boa ;
 
-! TODO: Can I namespace flush-state as a (M:)?
-:: flush-state ( state elt -- state )
-  <pack-state>
+M:: encode-state flush ( elt state -- state )
+  <encode-state>
     elt >>current
     1 >>run
     state
@@ -128,16 +130,17 @@ TUPLE: encode-state current run (result) ;
       if
     >>(result) ;
 
-:: encode-direct-one ( state elt -- state )
+GENERIC: encode-one ( elt state -- state )
+M:: encode-state encode-one ( elt state -- state )
   elt state current>> =
   [ state [ 1 + ] change-run ]
-  [ state elt flush-state ]
+  [ elt state flush ]
   if ;
 
 M: encode-state result>> ( state -- seq ) (result)>> 1 tail ;
 : encode-direct ( seq -- seqs )
-  <encode-state> [ encode-direct-one ] reduce
-  f flush-state
+  <encode-state> [ swap encode-one ] reduce
+  f swap flush
   result>> ;
 
 ! P14 (*) Duplicate the elements of a list.
