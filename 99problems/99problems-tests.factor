@@ -42,9 +42,21 @@ IN: 99problems.tests
 { { } } [ { } compress ] unit-test
 
 { { { 1 } { 2 } { 3 } { 4 } { 5 } } }
-    [ { 1 2 3 4 5 } pack ] unit-test
+[ { 1 2 3 4 5 } pack ] unit-test
 { { { 1 1 } { 2 2 } { 3 3 } { 2 2 } { 5 5 } } }
-    [ { 1 1 2 2 3 3 2 2 5 5 } pack ] unit-test
+[ { 1 1 2 2 3 3 2 2 5 5 } pack ] unit-test
 { { } } [ { } pack ] unit-test
 { { { 1 1 1 1 } { 2 } { 3 3 } { 1 1 } { 4 } { 5 5 5 5 } } }
-    [ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } pack ] unit-test
+[ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } pack ] unit-test
+
+{ { } } [ { } encode ] unit-test
+{ { { 4 1 } { 1 2 } { 2 3 } { 2 1 } { 1 4 } { 4 5 } } }
+[ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } encode ] unit-test
+
+{ { { 4 1 } 2 { 2 3 } { 2 1 } 4 { 4 5 } } }
+[ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } encode* ] unit-test
+
+{ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } }
+[ { { 4 1 } 2 { 2 3 } { 2 1 } 4 { 4 5 } } decode ] unit-test
+{ { } } [ { } decode ] unit-test
+{ { 1 1 1 1 2 } } [ { { 4 1 } 2 } decode ] unit-test

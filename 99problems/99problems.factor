@@ -86,3 +86,26 @@ M: pack-state result>> ( state -- seq ) (result)>> 1 tail ;
   <pack-state> [ pack-one ] reduce
   f flush   ! flush the current run to the result
   result>> ;
+
+! P10 (*) Run-length encoding of a list.
+: encode ( seq -- run ) pack [ [ length ] [ first ] bi 2array ] map ;
+
+! P11 (*) Modified run-length encoding.
+: encode* ( seq -- run )
+  pack
+  [ dup length 1 =
+    [ first ]
+    [ [ length ] [ first ] bi 2array ]
+    if
+  ] map ;
+
+! P12 (**) Decode a run-length encoded list.
+USING: math.ranges ;
+:: (repeat) ( n elt -- seq ) n [1,b] [ drop elt ] map ;
+
+: decode ( run -- seq )
+  [ dup sequence?
+    [ [ first ] [ second ] bi (repeat) ]
+    [ 1array ]
+    if
+  ] map my-flatten ;
