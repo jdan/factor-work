@@ -109,3 +109,70 @@ USING: math.ranges ;
     [ 1array ]
     if
   ] map my-flatten ;
+
+! P13 (**) Run-length encoding of a list (direct solution).
+TUPLE: encode-state current run (result) ;
+: <encode-state> ( -- state )
+  f 0 { } encode-state boa ;
+
+! TODO: Can I namespace flush-state as a (M:)?
+:: flush-state ( state elt -- state )
+  <pack-state>
+    elt >>current
+    1 >>run
+    state
+      [ (result)>> ] [ run>> ] [ current>> ] tri
+      over 1 =    ! kind of sus logic to change (1 A) -> A
+      [ nip suffix ]
+      [ 2array suffix ]
+      if
+    >>(result) ;
+
+:: encode-direct-one ( state elt -- state )
+  elt state current>> =
+  [ state [ 1 + ] change-run ]
+  [ state elt flush-state ]
+  if ;
+
+M: encode-state result>> ( state -- seq ) (result)>> 1 tail ;
+: encode-direct ( seq -- seqs )
+  <encode-state> [ encode-direct-one ] reduce
+  f flush-state
+  result>> ;
+
+! P14 (*) Duplicate the elements of a list.
+:: dupli ( seq -- seq )
+  seq
+  [ { } ]
+  [ first dup 2array
+    seq rest dupli append
+  ]
+  if-empty ;
+
+! P15 (**) Replicate the elements of a list a given number of times.
+:: repli ( seq n -- seq )
+  seq
+  [| elt | n elt (repeat) ]
+  map my-flatten ;
+
+! P16 (**) Drop every N'th element from a list.
+USING: sequences.extras ;
+:: drop-nth ( seq n -- seq )
+  seq
+  [| elt i | i 1 + n mod 0 > ]
+  filter-index ;  ! filter-index is a bit of a cop-out
+
+:: (drop-nth*) ( seq n cur -- seq )
+  seq
+  [ { } ]
+  [ cur 1 =
+    [ rest n n (drop-nth*) ]
+    [ rest n cur 1 - (drop-nth*)
+      seq first
+      prefix
+    ]
+    if
+  ]
+  if-empty ;
+
+: drop-nth* ( seq n -- seq ) dup (drop-nth*) ;

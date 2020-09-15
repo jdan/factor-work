@@ -60,3 +60,17 @@ IN: 99problems.tests
 [ { { 4 1 } 2 { 2 3 } { 2 1 } 4 { 4 5 } } decode ] unit-test
 { { } } [ { } decode ] unit-test
 { { 1 1 1 1 2 } } [ { { 4 1 } 2 } decode ] unit-test
+
+{ { { 4 1 } 2 { 2 3 } { 2 1 } 4 { 4 5 } } }
+[ { 1 1 1 1 2 3 3 1 1 4 5 5 5 5 } encode-direct ] unit-test
+
+{ { } } [ { } dupli ] unit-test
+{ { 1 1 } } [ { 1 } dupli ] unit-test
+{ { 1 1 2 2 } } [ { 1 2 } dupli ] unit-test
+
+{ { } } [ { } 3 repli ] unit-test
+{ { 1 1 1 2 2 2 3 3 3 } } [ { 1 2 3 } 3 repli ] unit-test
+{ { 1 1 1 1 1 } } [ { 1 } 5 repli ] unit-test
+
+{ { 1 2 4 5 7 8 } } [ { 1 2 3 4 5 6 7 8 9 } 3 drop-nth ] unit-test
+{ { 1 2 4 5 7 8 } } [ { 1 2 3 4 5 6 7 8 9 } 3 drop-nth* ] unit-test
