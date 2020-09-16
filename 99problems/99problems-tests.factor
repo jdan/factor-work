@@ -74,3 +74,7 @@ IN: 99problems.tests
 
 { { 1 2 4 5 7 8 } } [ { 1 2 3 4 5 6 7 8 9 } 3 drop-nth ] unit-test
 { { 1 2 4 5 7 8 } } [ { 1 2 3 4 5 6 7 8 9 } 3 drop-nth* ] unit-test
+
+{ { { 1 2 3 } { 4 5 6 } } } [ { 1 2 3 4 5 6 } 3 split ] unit-test
+
+{ { 3 4 5 } } [ { 1 2 3 4 5 6 } 3 5 slice ] unit-test

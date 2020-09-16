@@ -179,3 +179,40 @@ USING: sequences.extras ;
   if-empty ;
 
 : drop-nth* ( seq n -- seq ) dup (drop-nth*) ;
+
+! P17 (*) Split a list into two parts; the length of the first
+! part is given.
+:: (split) ( seq n acc -- seqs )
+  n 0 =
+  [ acc seq 2array ]
+  [ seq rest
+    n 1 -
+    acc seq first suffix
+    (split)
+  ]
+  if ;
+
+: split ( seq n -- seqs ) { } (split) ;
+
+! P18 (**) Extract a slice from a list.
+:: drop-start ( seq n -- seq )
+  n 0 =
+  [ seq ]
+  [ seq rest n 1 - drop-start ]
+  if ;
+
+:: take ( seq n -- seq )
+  n 0 =
+  [ { } ]
+  [ seq rest n 1 - take
+    seq first
+    prefix
+  ]
+  if ;
+
+:: slice ( seq a b -- seq )
+  [let
+    a 1 - :> start
+    b a - 1 + :> end
+    seq start drop-start end take
+  ] ;
