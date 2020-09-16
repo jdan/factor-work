@@ -216,3 +216,77 @@ USING: sequences.extras ;
     b a - 1 + :> end
     seq start drop-start end take
   ] ;
+
+:: (rotate) ( seq n acc -- seq )
+  n 0 =
+  [ seq acc append ]
+  [ seq rest
+    n 1 -
+    acc seq first suffix
+    (rotate)
+  ]
+  if ;
+
+! P19 (**) Rotate a list N places to the left.
+:: rotate ( seq n -- seq )
+  n 0 <
+  [ seq dup length n + rotate ]
+  [ seq n { } (rotate) ]
+  if ;
+
+! P20 (*) Remove the K'th element from a list.
+:: remove-at ( seq n -- seq )
+  n 1 =
+  [ seq rest ]
+  [ seq rest n 1 - remove-at
+    seq first
+    prefix
+  ]
+  if ;
+
+! P21 (*) Insert an element at a given position
+! into a list.
+:: insert-at ( elt seq n -- seq )
+  n 1 =
+  [ seq elt prefix ]
+  [ elt seq rest n 1 - insert-at
+    seq first
+    prefix
+  ]
+  if ;
+
+! P22 (*) Create a list containing all integers
+! within a given range.
+:: range ( a b -- seq )   ! NOTE: this is just [a,b]
+  a b =
+  [ { b } ]
+  [ a 1 + b range
+    a
+    prefix
+  ]
+  if ;
+
+:: range* ( a b -- seq )
+  a 1 - :> value!
+  value
+  [ value b < ]        ! need a mutable `value` to compare
+  [ value 1 + dup value! ]  ! yield, and also update value
+  produce nip ;
+
+USING: random ;
+! P23 (**) Extract a given number of randomly selected
+! elements from a list.
+: rnd-select ( seq n -- seq ) sample ;
+
+! P24 (*) Lotto: Draw N different random numbers from
+! the set 1..M.
+:: lotto-select ( n m -- seq )
+  [let
+    n [1,b] :> ns
+    m [1,b] :> ms
+    ns [ drop ms random ] map
+  ] ;
+
+! P25 (*) Generate a random permutation of the elements
+! of a list.
+: rnd-permu ( seq -- seq ) dup length rnd-select ;

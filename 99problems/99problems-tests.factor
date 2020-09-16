@@ -78,3 +78,13 @@ IN: 99problems.tests
 { { { 1 2 3 } { 4 5 6 } } } [ { 1 2 3 4 5 6 } 3 split ] unit-test
 
 { { 3 4 5 } } [ { 1 2 3 4 5 6 } 3 5 slice ] unit-test
+
+{ { 4 5 6 7 8 9 1 2 3 } } [ { 1 2 3 4 5 6 7 8 9 } 3 rotate ] unit-test
+{ { 7 8 9 1 2 3 4 5 6 } } [ { 1 2 3 4 5 6 7 8 9 } -3 rotate ] unit-test
+
+{ { 1 2 4 } } [ { 1 2 3 4 } 3 remove-at ] unit-test
+
+{ { 1 "hello" 2 3 } } [ "hello" { 1 2 3 } 2 insert-at ] unit-test
+
+{ { 4 5 6 7 8 9 } } [ 4 9 range ] unit-test
+{ { 4 5 6 7 8 9 } } [ 4 9 range* ] unit-test
