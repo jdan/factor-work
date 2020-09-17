@@ -88,3 +88,16 @@ IN: 99problems.tests
 
 { { 4 5 6 7 8 9 } } [ 4 9 range ] unit-test
 { { 4 5 6 7 8 9 } } [ 4 9 range* ] unit-test
+
+{ {
+  { 1 2 3 }
+  { 1 2 4 }
+  { 1 2 5 }
+  { 1 3 4 }
+  { 1 3 5 }
+  { 1 4 5 }
+  { 2 3 4 }
+  { 2 3 5 }
+  { 2 4 5 }
+  { 3 4 5 }
+} } [ 3 { 1 2 3 4 5 } combination ] unit-test

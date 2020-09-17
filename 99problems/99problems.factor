@@ -211,11 +211,9 @@ USING: sequences.extras ;
   if ;
 
 :: slice ( seq a b -- seq )
-  [let
-    a 1 - :> start
-    b a - 1 + :> end
-    seq start drop-start end take
-  ] ;
+  a 1 - :> start
+  b a - 1 + :> end
+  seq start drop-start end take ;
 
 :: (rotate) ( seq n acc -- seq )
   n 0 =
@@ -281,12 +279,26 @@ USING: random ;
 ! P24 (*) Lotto: Draw N different random numbers from
 ! the set 1..M.
 :: lotto-select ( n m -- seq )
-  [let
-    n [1,b] :> ns
-    m [1,b] :> ms
-    ns [ drop ms random ] map
-  ] ;
+  n [1,b] :> ns
+  m [1,b] :> ms
+  ns [ drop ms random ] map ;
 
 ! P25 (*) Generate a random permutation of the elements
 ! of a list.
 : rnd-permu ( seq -- seq ) dup length rnd-select ;
+
+! P26 (**) Generate the combinations of K distinct objects
+! chosen from the N elements of a list
+:: all-combinations ( seq -- seqs )
+  seq
+  [ { { } } ]
+  [ rest all-combinations :> rest*
+    rest* [ seq first prefix ] map
+    rest*
+    append
+  ]
+  if-empty ;
+
+:: combination ( n seq -- seqs )
+  seq all-combinations
+  [ length n = ] filter ;
