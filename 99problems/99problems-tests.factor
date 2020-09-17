@@ -123,3 +123,20 @@ IN: 99problems.tests
 } }
 [ { { 1 2 3 } { 4 5 } { 6 7 8 } { 4 5 } { 9 10 11 12 } { 13 14 } { 15 } } lfsort ]
 unit-test
+
+{ t } [ 17 is-prime? ] unit-test
+{ t } [ 2 is-prime? ] unit-test
+{ f } [ 1 is-prime? ] unit-test
+{ f } [ 8 is-prime? ] unit-test
+{ f } [ 9 is-prime? ] unit-test
+
+{ 2 } [ 8 6 my-gcd ] unit-test
+{ 12 } [ 12 24 my-gcd ] unit-test
+{ 4 } [ 12 16 my-gcd ] unit-test
+{ 1 } [ 125 81 my-gcd ] unit-test
+
+{ f } [ 8 6 coprime? ] unit-test
+{ f } [ 12 24 coprime? ] unit-test
+{ f } [ 12 16 coprime? ] unit-test
+{ t } [ 125 81 coprime? ] unit-test
+{ t } [ 47 120 coprime? ] unit-test

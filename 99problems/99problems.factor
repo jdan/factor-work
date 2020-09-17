@@ -320,3 +320,25 @@ USING: assocs ;
 :: lfsort ( seqs -- seqs )
   seqs [ length ] collect-by :> freq
   seqs [ [| seq | seq length freq at length ] bi@ <=> ] sort ;
+
+! P31 (**) Determine whether a given integer number is prime.
+USING: math.functions ;
+:: is-prime? ( n -- ? )
+  n 1 =
+  [ f ]
+  [ n sqrt [1,b] rest   ! chop off the 1
+    [| elt | n elt mod 0 = ]
+    none?
+  ] if ;
+
+! P32 (**) Determine the greatest common divisor of two positive
+! integer numbers.
+:: my-gcd ( a b -- n )
+  b 0 =
+  [ a ]
+  [ b a b mod my-gcd ]
+  if ;
+
+! P33 (*) Determine whether two positive integer numbers
+! are coprime.
+: coprime? ( a b -- ? ) my-gcd 1 = ;
