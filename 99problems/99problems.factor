@@ -300,5 +300,23 @@ USING: random ;
   if-empty ;
 
 :: combination ( n seq -- seqs )
-  seq all-combinations
-  [ length n = ] filter ;
+  seq all-combinations [ length n = ] filter ;
+
+! P27 (**) Group the elements of a set into disjoint subsets.
+! meh... skipping this one
+
+! P28 (**) Sorting a list of lists according to length
+! of sublists
+USING: sorting math.order ;
+: lsort ( seq -- seq ) [ [ length ] bi@ <=> ] sort ;
+
+! (b) Again, we suppose that a list contains elements that
+! are lists themselves. But this time the objective is to
+! sort the elements of this list according to their length
+! frequency; i.e., in the default, where sorting is done
+! ascendingly, lists with rare lengths are placed first,
+! others with a more frequent length come later.
+USING: assocs ;
+:: lfsort ( seqs -- seqs )
+  seqs [ length ] collect-by :> freq
+  seqs [ [| seq | seq length freq at length ] bi@ <=> ] sort ;
