@@ -390,8 +390,35 @@ USING: math.functions ;
 : primes ( a b -- seq ) range [ is-prime? ] filter ;
 
 ! P40 (**) Goldbach's conjecture.
+:: product ( a b -- seq )
+  a
+  [| a-elt |
+    b
+    [| b-elt | a-elt b-elt 2array ]
+    map
+  ]
+  map { } [ append ] reduce ;
+
+:: first-pred ( seq quot: ( elt -- ? ) -- elt/? )
+  seq
+  [ f ]
+  [ first quot call
+    [ seq first ]
+    [ seq rest quot first-pred ]
+    if
+  ]
+  if-empty ; inline recursive
+
 :: goldbach ( n -- pair )
-  1 n primes :> ps
-  2 ps combination
-  [ [ first ] [ second ] bi + n = ] filter
-  first ;
+  1 n primes dup product
+  [ [ first ] [ second ] bi + n = ] first-pred ;
+
+! P41 (**) A list of Goldbach compositions.
+! NOTE: slowwwww
+:: goldbach-list ( a b -- pairs )
+  a b [a,b] [ [ 2 > ] [ even? ] bi and ] filter >array
+  [ goldbach ] map ;
+
+:: goldbach-list* ( a b lim -- pairs )
+  a b goldbach-list
+  [| pair | pair first lim > ] filter ;

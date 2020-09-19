@@ -164,3 +164,8 @@ unit-test
 
 { { 3 37 } } [ 40 goldbach ] unit-test
 { { 5 23 } } [ 28 goldbach ] unit-test
+
+{ { { 3 7 } { 5 7 } { 3 11 } { 3 13 } { 5 13 } { 3 17 } } }
+[ 9 20 goldbach-list ] unit-test
+
+{ { { 19 79 } } } [ 1 100 10 goldbach-list* ] unit-test
