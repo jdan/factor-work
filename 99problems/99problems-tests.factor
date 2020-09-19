@@ -140,3 +140,27 @@ unit-test
 { f } [ 12 16 coprime? ] unit-test
 { t } [ 125 81 coprime? ] unit-test
 { t } [ 47 120 coprime? ] unit-test
+
+{ 4 } [ 10 totient-phi ] unit-test
+{ 8 } [ 20 totient-phi ] unit-test
+{ 40 } [ 100 totient-phi ] unit-test
+
+{ { 3 3 5 7 } } [ 315 prime-factors ] unit-test
+{ { 2 2 2 2 2 2 2 2 2 2 } } [ 1024 prime-factors ] unit-test
+
+{ {
+  { 3 2 }
+  { 5 1 }
+  { 7 1 }
+} } [ 315 prime-factors-mult ] unit-test
+{ { { 2 10 } } } [ 1024 prime-factors-mult ] unit-test
+
+{ 4 } [ 10 totient-phi* ] unit-test
+{ 8 } [ 20 totient-phi* ] unit-test
+{ 40 } [ 100 totient-phi* ] unit-test
+
+{ { 2 3 5 7 } } [ 1 7 primes ] unit-test
+{ { 3 5 7 11 13 } } [ 3 14 primes ] unit-test
+
+{ { 3 37 } } [ 40 goldbach ] unit-test
+{ { 5 23 } } [ 28 goldbach ] unit-test

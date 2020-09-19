@@ -321,12 +321,14 @@ USING: assocs ;
   seqs [ length ] collect-by :> freq
   seqs [ [| seq | seq length freq at length ] bi@ <=> ] sort ;
 
+: [2,b] ( n -- seq ) [1,b] rest ;
+
 ! P31 (**) Determine whether a given integer number is prime.
 USING: math.functions ;
 :: is-prime? ( n -- ? )
   n 1 =
   [ f ]
-  [ n sqrt [1,b] rest   ! chop off the 1
+  [ n sqrt [2,b]
     [| elt | n elt mod 0 = ]
     none?
   ] if ;
@@ -342,3 +344,54 @@ USING: math.functions ;
 ! P33 (*) Determine whether two positive integer numbers
 ! are coprime.
 : coprime? ( a b -- ? ) my-gcd 1 = ;
+
+! P34 (**) Calculate Euler's totient function phi(m).
+:: totient-phi ( n -- n )
+  n [1,b) [| i | n i coprime? ] filter length ;
+
+! P35 (**) Determine the prime factors of a given positive
+! integer.
+:: (prime-factors) ( n a -- seq )
+  a n >
+  [ { } ]
+  [ n a mod 0 =
+    [ n a / 2 (prime-factors)
+      a
+      prefix ]
+    [ n a 1 + (prime-factors) ]
+    if
+  ]
+  if ;
+
+: prime-factors ( n -- seq ) 2 (prime-factors) ;
+
+! P36 (**) Determine the prime factors of a given
+! positive integer (2).
+: prime-factors-mult ( n -- exps )
+  prime-factors encode [ reverse ] map ;
+
+! P37 (**) Calculate Euler's totient function phi(m) (improved).
+: totient-phi* ( n -- n )
+  dup
+  prime-factors-mult
+  [ first 1 swap recip - ] map
+  1 [ * ] reduce
+  * ;
+
+! P38 (*) Compare the two methods of calculating Euler's totient
+! function.
+!
+! [ 10090 totient-phi ] benchmark
+!   1272700
+! [ 10090 totient-phi* ] benchmark
+!   27700
+
+! P39 (*) A list of prime numbers.
+: primes ( a b -- seq ) range [ is-prime? ] filter ;
+
+! P40 (**) Goldbach's conjecture.
+:: goldbach ( n -- pair )
+  1 n primes :> ps
+  2 ps combination
+  [ [ first ] [ second ] bi + n = ] filter
+  first ;
