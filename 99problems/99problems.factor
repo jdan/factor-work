@@ -422,3 +422,52 @@ USING: math.functions ;
 :: goldbach-list* ( a b lim -- pairs )
   a b goldbach-list
   [| pair | pair first lim > ] filter ;
+
+! P46 (**) Truth tables for logical expressions.
+TUPLE: var' name ;
+: <var> ( str -- var' ) var' boa ;
+TUPLE: or' left right ;
+: <or> ( exp exp -- or' ) or' boa ;
+TUPLE: and' left right ;
+: <and> ( exp exp -- and' ) and' boa ;
+
+GENERIC: eval ( assoc exp -- ? )
+M: var' eval ( assoc var' -- ? ) name>> swap at ;
+M:: or' eval ( assoc or' -- ? )
+  assoc or' left>> eval
+  assoc or' right>> eval
+  or ;
+M:: and' eval ( assoc and' -- ? )
+  assoc and' left>> eval
+  assoc and' right>> eval
+  and ;
+
+:: 2table ( exp -- seq )
+  { t f } dup product
+  [| seq |
+    seq first :> a
+    seq second :> b
+    a b H{ { "a" a } { "b" b } } exp eval
+    3array
+  ] map ;
+
+! P48 (**) Truth tables for logical expressions (3).
+:: 3product ( a b c -- seq )
+  a b product :> ab
+  ab
+  [| ab-elt |
+    c
+    [| c-elt | ab-elt c-elt suffix ]
+    map
+  ]
+  map { } [ append ] reduce ;
+
+:: 3table ( exp -- seq )
+  { t f } dup dup 3product
+  [| seq |
+    seq first :> a
+    seq second :> b
+    seq third :> c
+    a b c H{ { "a" a } { "b" b } { "c" c } } exp eval
+    4array
+  ] map ;

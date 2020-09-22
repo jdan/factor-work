@@ -169,3 +169,35 @@ unit-test
 [ 9 20 goldbach-list ] unit-test
 
 { { { 19 79 } } } [ 1 100 10 goldbach-list* ] unit-test
+
+{ { { t t t } { t f t } { f t t } { f f f } } }
+[ "a" <var> "b" <var> <or> 2table ] unit-test
+
+{ { { t t t } { t f t } { f t f } { f f f } } }
+[ "a" <var>
+  "a" <var> "b" <var> <or>
+  <and> 2table ] unit-test
+
+{ {
+  { t t t t }
+  { t t f t }
+  { t f t t }
+  { t f f t }
+  { f t t t }
+  { f t f t }
+  { f f t t }
+  { f f f f }
+} }
+[ "a" <var> "b" <var> "c" <var> <or> <or> 3table ] unit-test
+
+{ {
+  { t t t t }
+  { t t f t }
+  { t f t t }
+  { t f f t }
+  { f t t t }
+  { f t f f }
+  { f f t f }
+  { f f f f }
+} }
+[ "a" <var> "b" <var> "c" <var> <and> <or> 3table ] unit-test
