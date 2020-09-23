@@ -226,3 +226,10 @@ unit-test
 [ { { "a" 45 } { "b" 13 } { "c" 12 } { "d" 16 } { "e" 9 } { "f" 5 } }
   huffman
 ] unit-test
+
+{ t } [ f symmetric? ] unit-test
+{ t } [ 5 f f <tree> symmetric? ] unit-test
+{ t } [ 5 6 f f <tree>
+          7 f f <tree> <tree> symmetric? ] unit-test
+{ f } [ 5 6 f f <tree>
+          f <tree> symmetric? ] unit-test

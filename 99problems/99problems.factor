@@ -538,3 +538,35 @@ USING: hashtables ;
   fr-seq>leaf-seq
   leaf-seq>node
   node>huffman ;
+
+! P56 (**) Symmetric binary trees
+TUPLE: tree value left right ;
+: <tree> ( value left right -- tree ) tree boa ;
+
+USING: classes.tuple ;
+:: mirror ( tree/? -- tree/? )
+  tree/? f =
+  [ f ]
+  [ tree/? right>> mirror :> left
+    tree/? left>> mirror :> right
+    tree/? value>> left right <tree>
+  ]
+  if ; inline recursive
+
+:: structure=? ( a b -- ? )
+  ! Do two trees have the same shape? That is,
+  ! if all `value`s were a single value, would
+  ! the trees be equal?
+  a f = b f = and
+  [ t ]
+  [ a f = not b f = not and
+    [ a left>> b left>> structure=?
+      a right>> b right>> structure=?
+      and
+    ]
+    [ f ]
+    if
+  ]
+  if ;
+
+: symmetric? ( tree -- ? ) dup mirror structure=? ;
