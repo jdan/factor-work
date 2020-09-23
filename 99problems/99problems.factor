@@ -308,7 +308,7 @@ USING: random ;
 ! P28 (**) Sorting a list of lists according to length
 ! of sublists
 USING: sorting math.order ;
-: lsort ( seq -- seq ) [ [ length ] bi@ <=> ] sort ;
+: lsort ( seq -- seq ) [ [ length ] compare ] sort ;
 
 ! (b) Again, we suppose that a list contains elements that
 ! are lists themselves. But this time the objective is to
@@ -319,7 +319,7 @@ USING: sorting math.order ;
 USING: assocs ;
 :: lfsort ( seqs -- seqs )
   seqs [ length ] collect-by :> freq
-  seqs [ [| seq | seq length freq at length ] bi@ <=> ] sort ;
+  seqs [ [| seq | seq length freq at length ] compare ] sort ;
 
 : [2,b] ( n -- seq ) [1,b] rest ;
 
@@ -329,7 +329,7 @@ USING: math.functions ;
   n 1 =
   [ f ]
   [ n sqrt [2,b]
-    [| elt | n elt mod 0 = ]
+    [| elt | n elt divisor? ]
     none?
   ] if ;
 
@@ -354,7 +354,7 @@ USING: math.functions ;
 :: (prime-factors) ( n a -- seq )
   a n >
   [ { } ]
-  [ n a mod 0 =
+  [ n a divisor?
     [ n a / 2 (prime-factors)
       a
       prefix ]
