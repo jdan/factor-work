@@ -493,8 +493,6 @@ TUPLE: node left right amt ;
 : <node> ( left right amt -- node ) node boa ;
 INSTANCE: node fr
 
-! M: fr <=> ( a b -- <=> ) [ amt>> ] compare ;
-
 USING: heaps ;
 :: build-tree ( heap -- fr )
   heap heap-size 1 =
