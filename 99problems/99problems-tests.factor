@@ -201,3 +201,28 @@ unit-test
   { f f f f }
 } }
 [ "a" <var> "b" <var> "c" <var> <and> <or> 3table ] unit-test
+
+{ { { } } } [ 0 gray ] unit-test
+{ { { 0 0 } { 0 1 } { 1 1 } { 1 0 } } } [ 2 gray ] unit-test
+{ {
+  { 0 0 0 }
+  { 0 0 1 }
+  { 0 1 1 }
+  { 0 1 0 }
+  { 1 1 0 }
+  { 1 1 1 }
+  { 1 0 1 }
+  { 1 0 0 }
+} } [ 3 gray ] unit-test
+
+{ H{
+  { "a" "0" }
+  { "b" "101" }
+  { "c" "100" }
+  { "d" "111" }
+  { "e" "1101" }
+  { "f" "1100" }
+} }
+[ { { "a" 45 } { "b" 13 } { "c" 12 } { "d" 16 } { "e" 9 } { "f" 5 } }
+  huffman
+] unit-test

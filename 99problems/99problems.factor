@@ -471,3 +471,72 @@ M:: and' eval ( assoc and' -- ? )
     a b c H{ { "a" a } { "b" b } { "c" c } } exp eval
     4array
   ] map ;
+
+! P49 (**) Gray code.
+:: gray ( n -- seq )
+  n 0 =
+  [ { { } } ]
+  [ n 1 - gray :> rest
+    rest [ 0 prefix ] map
+    rest reverse [ 1 prefix ] map
+    append
+  ]
+  if ;
+
+! P50 (***) Huffman code.
+MIXIN: fr
+
+TUPLE: leaf char amt ;
+: <leaf> ( char amt -- leaf ) leaf boa ;
+INSTANCE: leaf fr
+TUPLE: node left right amt ;
+: <node> ( left right amt -- node ) node boa ;
+INSTANCE: node fr
+
+! M: fr <=> ( a b -- <=> ) [ amt>> ] compare ;
+
+USING: heaps ;
+:: build-tree ( heap -- fr )
+  heap heap-size 1 =
+  [ heap heap-pop drop ]
+  [ heap heap-pop drop :> a
+    heap heap-pop drop :> b
+    ! combine into a new node
+    a b 2dup [ amt>> ] bi@ + <node> :> new-node
+
+    ! push the node
+    new-node new-node amt>> heap heap-push
+
+    ! recurse
+    heap build-tree
+  ]
+  if ;
+
+: fr-seq>leaf-seq ( seq -- seq )
+  [ [ first ] [ second ] bi <leaf> ] map ;
+
+: leaf-seq>node ( seq -- node )
+  <min-heap>
+  [| acc elt |
+    elt elt amt>> acc heap-push
+    acc
+  ] reduce
+  build-tree ;
+
+GENERIC: (node>huffman) ( acc fr -- seq )
+M:: leaf (node>huffman) ( acc leaf -- seq )
+  leaf char>> acc 2array  ! maybe a tuple instead of 2array
+  1array ;
+M:: node (node>huffman) ( acc node -- seq )
+  acc "0" append node left>> (node>huffman)
+  acc "1" append node right>> (node>huffman)
+  append ;
+
+USING: hashtables ;
+:: node>huffman ( node -- hashtable )
+  "" node (node>huffman) >hashtable ;
+
+: huffman ( seq -- hashtable )
+  fr-seq>leaf-seq
+  leaf-seq>node
+  node>huffman ;
