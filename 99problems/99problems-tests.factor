@@ -233,3 +233,11 @@ unit-test
           7 f f <tree> <tree> symmetric? ] unit-test
 { f } [ 5 6 f f <tree>
           f <tree> symmetric? ] unit-test
+
+{ t } [ { 5 3 18 1 4 12 21 } construct symmetric? ] unit-test
+{ t } [ { 3 2 5 7 1 } construct symmetric? ] unit-test
+{ f } [ { 1 2 3 4 5 } construct symmetric? ] unit-test
+
+{ 4 } [ { 5 3 18 1 4 12 21 } construct count-leaves ] unit-test
+{ 2 } [ { 3 2 5 7 1 } construct count-leaves ] unit-test
+{ 1 } [ { 1 2 3 4 5 } construct count-leaves ] unit-test

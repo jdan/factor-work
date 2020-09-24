@@ -570,3 +570,32 @@ USING: classes.tuple ;
   if ;
 
 : symmetric? ( tree -- ? ) dup mirror structure=? ;
+
+! P57 (**) Binary search trees (dictionaries)
+:: bst-insert ( tree/? elt -- tree )
+  tree/? f =
+  [ elt f f <tree> ]
+  [ elt tree/? value>> >
+    [ tree/? [ elt bst-insert ] change-right ]
+    [ tree/? [ elt bst-insert ] change-left ]
+    if
+  ]
+  if ;
+
+: construct ( seq -- tree ) f [ bst-insert ] reduce ;
+
+! P58-P60: I don't wanna do height stuff with backtracking
+
+! P61 (*) Count the leaves of a binary tree
+:: count-leaves ( tree/? -- n )
+  tree/? f =
+  [ 0 ]
+  [ tree/? right>> f =
+    tree/? left>> f = and
+    [ 1 ]
+    [ tree/? right>> count-leaves
+      tree/? left>> count-leaves +
+    ]
+    if
+  ]
+  if ;
