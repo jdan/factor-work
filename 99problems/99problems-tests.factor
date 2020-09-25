@@ -241,3 +241,15 @@ unit-test
 { 4 } [ { 5 3 18 1 4 12 21 } construct count-leaves ] unit-test
 { 2 } [ { 3 2 5 7 1 } construct count-leaves ] unit-test
 { 1 } [ { 1 2 3 4 5 } construct count-leaves ] unit-test
+
+USING: accessors sequences ;
+{ { 1 7 } } [ { 3 2 5 7 1 } construct collect-leaves [ value>> ] map ] unit-test
+{ { 5 } } [ { 1 2 3 4 5 } construct collect-leaves [ value>> ] map ] unit-test
+
+{ { 3 2 5 } } [ { 3 2 5 7 1 } construct collect-nodes [ value>> ] map ] unit-test
+{ { 1 2 3 4 } } [ { 1 2 3 4 5 } construct collect-nodes [ value>> ] map ] unit-test
+
+{ { 3 } } [ { 3 2 5 7 1 } construct 1 collect-at-level [ value>> ] map ] unit-test
+{ { 2 5 } } [ { 3 2 5 7 1 } construct 2 collect-at-level [ value>> ] map ] unit-test
+{ { 1 7 } } [ { 3 2 5 7 1 } construct 3 collect-at-level [ value>> ] map ] unit-test
+{ { } } [ { 3 2 5 7 1 } construct 5 collect-at-level [ value>> ] map ] unit-test

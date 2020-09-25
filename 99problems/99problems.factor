@@ -590,11 +590,56 @@ USING: classes.tuple ;
 :: count-leaves ( tree/? -- n )
   tree/? f =
   [ 0 ]
-  [ tree/? right>> f =
-    tree/? left>> f = and
+  [ tree/? left>> f =
+    tree/? right>> f = and
     [ 1 ]
-    [ tree/? right>> count-leaves
-      tree/? left>> count-leaves +
+    [ tree/? left>> count-leaves
+      tree/? right>> count-leaves +
+    ]
+    if
+  ]
+  if ;
+
+! P61A (*) Collect the leaves of a binary tree in a list
+:: collect-leaves ( tree/? -- seq )
+  tree/? f =
+  [ { } ]
+  [ tree/? left>> f =
+    tree/? right>> f = and
+    [ tree/? 1array ]
+    [ tree/? left>> collect-leaves
+      tree/? right>> collect-leaves
+      append
+    ]
+    if
+  ]
+  if ;  ! TODO: some cool predicate to abstract this pattern
+
+! P62 (*) Collect the internal nodes of a binary tree in a list
+:: collect-nodes ( tree/? -- seq )
+  tree/? f =
+  [ { } ]
+  [ tree/? left>> f =
+    tree/? right>> f = and
+    [ { } ]
+    [ tree/? left>> collect-nodes
+      tree/? right>> collect-nodes
+      append
+      tree/? prefix
+    ]
+    if
+  ]
+  if ;  ! TODO: some cool predicate to abstract this pattern
+
+! P62B (*) Collect the nodes at a given level in a list
+:: collect-at-level ( tree/? n -- seq )
+  tree/? f =
+  [ { } ]
+  [ n 1 =
+    [ tree/? 1array ]
+    [ tree/? left>> n 1 - collect-at-level
+      tree/? right>> n 1 - collect-at-level
+      append
     ]
     if
   ]
